@@ -1,7 +1,9 @@
 {
     "name": "DLS.ModFramework",
     "rootNamespace": "DLS.Mod",
-    "references": [],
+    "references": [
+        "GUID:2b65bcfb6aad3f1459e94b356ff58293"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

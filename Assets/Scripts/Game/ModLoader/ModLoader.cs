@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using DLS.Description;
 using DLS.Description.Types;
 using DLS.SaveSystem;
 using Game.ModLoader.Types;
@@ -15,12 +16,32 @@ namespace Game.ModLoader
     public static ModDescription[] activeModDescriptions;
     private static List<Mod> activeMods = new List<Mod>();
 
+    public static ModChip[] ModdedChips
+    {
+      get;
+      private set;
+    }
+
+    public static void CreateModdedChipDescriptions()
+    {
+      List<ModChip> modChips = new List<ModChip>();
+      foreach (var mod in activeMods)
+      {
+        foreach (var chip in mod.chips)
+        {
+          chip.Chip.ChipType = ChipType.Modded;
+          modChips.Add(chip);
+        }
+      }
+
+      ModdedChips = modChips.ToArray();
+    }
+
     public static void Load()
     {
       foreach (var mod in activeMods)
       {
         mod.OnUnload();
-        Debug.Log("Unloading mod: " + mod.GetType());
       }
       activeMods.Clear();
       
@@ -28,7 +49,6 @@ namespace Game.ModLoader
       foreach (var mod in activeModDescriptions)
       {
         string path = Path.Combine(SavePaths.ModDirectory, mod.ModName);
-        Debug.Log(path);
         if (Directory.Exists(Path.Combine(SavePaths.ModDirectory, mod.ModName)))
         {
           modAssemblies.AddRange(
@@ -40,14 +60,12 @@ namespace Game.ModLoader
           );
         }
       }
-      
+
       foreach (var mod in modAssemblies)
       {
-          var assembly = Assembly.LoadFrom(mod);
+          Assembly assembly = Assembly.LoadFrom(mod);
           foreach (var type in assembly.GetTypes())
           {
-            Debug.Log(type);
-
             if (typeof(Mod).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
             {
               Mod instance = (Mod)Activator.CreateInstance(type);
