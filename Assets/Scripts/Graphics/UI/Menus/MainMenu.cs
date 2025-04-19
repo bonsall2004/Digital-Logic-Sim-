@@ -157,6 +157,9 @@ namespace DLS.Graphics
 		{
 			activeMenuScreen = MenuScreen.Main;
 			activePopup = PopupKind.None;
+			allModDescriptions = Loader.LoadAllModDescriptions();
+			ModLoader.activeModDescriptions = allModDescriptions.Where(m => m.Enabled).ToArray();
+			ModLoader.Load();
 			selectedProjectIndex = -1;
 		}
 
@@ -351,7 +354,7 @@ namespace DLS.Graphics
 			UI.DrawScrollView(ID_ProjectsScrollView, pos, size, Anchor.Centre, theme.ScrollTheme, DrawAllModsInScrollView);
 			ButtonTheme buttonTheme = DrawSettings.ActiveUITheme.MainMenuButtonTheme;
 			modMenuButtonStates[backButtonIndex] = true;
-			modMenuButtonStates[createModButton] = true;
+			// modMenuButtonStates[createModButton] = true;
 			
 			modMenuButtonStates[disableAllIndex] = allModDescriptions.Any(m => m.Enabled);
 			modMenuButtonStates[enableAllIndex] = allModDescriptions.Any(m => !m.Enabled);
