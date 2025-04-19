@@ -469,12 +469,7 @@ namespace DLS.Game
 				Simulator.ticksPerSecond = targetTicksPerSecond;
 				SimChip simChip = rootSimChip;
 				if (simChip == null) continue; // Could potentially be null for a frame when switching between chips
-				switch (description.Prefs_SimImpl)
-				{
-					case 0: Simulator.RunSimulationStep(simChip, inputPins); break;
-					case 1: Simulator.RunRealisticSimulationStep(simChip, inputPins); break;
-					default: break;
-				}
+				Simulator.RunSimulationStep(simChip, inputPins);
 
 				// ---- Wait some amount of time (if needed) to try to hit the target ticks per second ----
 				while (true)

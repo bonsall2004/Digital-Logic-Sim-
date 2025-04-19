@@ -85,11 +85,6 @@ namespace DLS.Simulation
 			}
 		}
 
-		public static void RunRealisticSimulationStep(SimChip rootSimChip, DevPinInstance[] inputPins)
-		{
-
-		}
-
 		// Recursively propagate signals through this chip and its subchips
 		static void StepChip(SimChip chip)
 		{

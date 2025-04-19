@@ -19,7 +19,6 @@ namespace DLS.Description
 		public int Prefs_Snapping;
 		public int Prefs_StraightWires;
 		public bool Prefs_SimPaused;
-		public int Prefs_SimImpl;
 		public int Prefs_SimTargetStepsPerSecond;
 
 		// List of all player-created chips (in order of creation -- oldest first)
