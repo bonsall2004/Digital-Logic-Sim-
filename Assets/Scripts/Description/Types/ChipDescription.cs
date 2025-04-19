@@ -3,6 +3,16 @@ using UnityEngine;
 
 namespace DLS.Description
 {
+	public struct Pin
+	{
+		public UInt64 data;
+		public UInt64 tristateFlags;
+	}
+
+	public interface ISimChip
+	{
+		public void Simulate(UInt64[] InternalData, in Pin[] Input, ref Pin[] Output);
+	}
 	public class ChipDescription
 	{
 		// ---- Name Comparison ----

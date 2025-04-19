@@ -61,6 +61,7 @@ namespace DLS.Graphics
 			FormatButtonString("Disable All"),
 			FormatButtonString("Enable All"),
 			FormatButtonString("Disable"),
+			// FormatButtonString("Create"),
 		};
 
 		static readonly Vector2Int[] Resolutions =
@@ -90,7 +91,7 @@ namespace DLS.Graphics
 		static int selectedModIndex = -1;
 
 		static readonly string authorString = "Created by: Sebastian Lague | Modified By: bonsall2004 & MarcasRealAccount";
-		static readonly string versionString = $"Version: {Main.DLSVersion} ({Main.LastUpdatedString})";
+		static readonly string versionString = $"DLS: {Main.DLSVersion} | ML: {Main.ModVersion}";
 		static string SelectedProjectName => allProjectDescriptions[selectedProjectIndex].ProjectName;
 
 		static string FormatButtonString(string s) => capitalize ? s.ToUpper() : s;
@@ -146,6 +147,9 @@ namespace DLS.Graphics
 				case PopupKind.NamePopup_NewProject:
 					DrawNamePopup();
 					break;
+				case PopupKind.NamePopup_NewMod:
+					DrawModNamePopup();
+					break;
 			}
 		}
 
@@ -153,6 +157,9 @@ namespace DLS.Graphics
 		{
 			activeMenuScreen = MenuScreen.Main;
 			activePopup = PopupKind.None;
+			allModDescriptions = Loader.LoadAllModDescriptions();
+			ModLoader.activeModDescriptions = allModDescriptions.Where(m => m.Enabled).ToArray();
+			ModLoader.Load();
 			selectedProjectIndex = -1;
 		}
 
@@ -338,6 +345,7 @@ namespace DLS.Graphics
 			const int disableAllIndex = 1;
 			const int enableAllIndex = 2;
 			const int disableButtonIndex = 3;
+			const int createModButton = 4;
 			DrawSettings.UIThemeDLS theme = DrawSettings.ActiveUITheme;
 
 			Vector2 pos = UI.Centre + new Vector2(0, -1);
@@ -346,6 +354,7 @@ namespace DLS.Graphics
 			UI.DrawScrollView(ID_ProjectsScrollView, pos, size, Anchor.Centre, theme.ScrollTheme, DrawAllModsInScrollView);
 			ButtonTheme buttonTheme = DrawSettings.ActiveUITheme.MainMenuButtonTheme;
 			modMenuButtonStates[backButtonIndex] = true;
+			// modMenuButtonStates[createModButton] = true;
 			
 			modMenuButtonStates[disableAllIndex] = allModDescriptions.Any(m => m.Enabled);
 			modMenuButtonStates[enableAllIndex] = allModDescriptions.Any(m => !m.Enabled);
@@ -393,6 +402,9 @@ namespace DLS.Graphics
 			else if (buttonIndex == disableButtonIndex && selectedMod != null)
 			{
 				selectedMod.Enabled = !selectedMod.Enabled;
+			} else if (buttonIndex == createModButton)
+			{
+				activePopup = PopupKind.NamePopup_NewMod;
 			}
 		}
 		
@@ -526,6 +538,57 @@ namespace DLS.Graphics
 				UI.ModifyPanel(panelID, UI.GetCurrentBoundsScope().Centre, UI.GetCurrentBoundsScope().Size + Vector2.one * 2, ColHelper.MakeCol255(37, 37, 43));
 			}
 		}
+		static void DrawModNamePopup()
+		{
+			DrawSettings.UIThemeDLS theme = DrawSettings.ActiveUITheme;
+
+			UI.StartNewLayer();
+			UI.DrawFullscreenPanel(theme.MenuBackgroundOverlayCol);
+
+			using (UI.BeginBoundsScope(true))
+			{
+				Draw.ID panelID = UI.ReservePanel();
+
+				InputFieldTheme inputTheme = theme.ChipNameInputField;
+
+				Vector2 charSize = UI.CalculateTextSize("M", inputTheme.fontSize, inputTheme.font);
+				Vector2 padding = new(2, 2);
+				Vector2 inputFieldSize = new Vector2(charSize.x * MaxProjectNameLength, charSize.y) + padding * 2;
+
+
+				InputFieldState state = UI.InputField(ID_ProjectNameInput, inputTheme, UI.Centre, inputFieldSize, "", Anchor.Centre, padding.x, projectNameValidator, true);
+
+				string modName = state.text;
+				bool validProjectName = !string.IsNullOrWhiteSpace(modName) && SaveUtils.ValidFileName(modName);
+				bool modAlreadyExists = allModDescriptions.Any(m => m.ModName == modName);
+
+				bool canCreateProject = validProjectName && !modAlreadyExists;
+
+				Vector2 buttonsRegionSize = new(inputFieldSize.x, 5);
+				Vector2 buttonsRegionCentre = UILayoutHelper.CalculateCentre(UI.PrevBounds.BottomLeft, buttonsRegionSize, Anchor.TopLeft);
+				(Vector2 size, Vector2 centre) layoutCancel = UILayoutHelper.HorizontalLayout(2, 0, buttonsRegionCentre, buttonsRegionSize);
+				(Vector2 size, Vector2 centre) layoutConfirm = UILayoutHelper.HorizontalLayout(2, 1, buttonsRegionCentre, buttonsRegionSize);
+
+				bool cancelButton = UI.Button("CANCEL", theme.MainMenuButtonTheme, layoutCancel.centre, new Vector2(layoutCancel.size.x, 0), true, false, true);
+				bool confirmButton = UI.Button("CREATE", theme.MainMenuButtonTheme, layoutConfirm.centre, new Vector2(layoutConfirm.size.x, 0), canCreateProject, false, true);
+
+				if (cancelButton || KeyboardShortcuts.CancelShortcutTriggered)
+				{
+					state.ClearText();
+					activePopup = PopupKind.None;
+				}
+
+				if (confirmButton || KeyboardShortcuts.ConfirmShortcutTriggered)
+				{
+					state.ClearText();
+					PopupKind kind = activePopup;
+					activePopup = PopupKind.None;
+					OnNamePopupConfirmed(kind, modName);
+				}
+
+				UI.ModifyPanel(panelID, UI.GetCurrentBoundsScope().Centre, UI.GetCurrentBoundsScope().Size + Vector2.one * 2, ColHelper.MakeCol255(37, 37, 43));
+			}
+		}
 
 		static void OnNamePopupConfirmed(PopupKind kind, string name)
 		{
@@ -541,6 +604,19 @@ namespace DLS.Graphics
 			else if (kind is PopupKind.NamePopup_NewProject)
 			{
 				Main.CreateOrLoadProject(name);
+			} else if (kind is PopupKind.NamePopup_NewMod)
+			{
+				ModDescription newMod = new ModDescription()
+				{
+					ModName = name,
+					Enabled = true
+				};
+				Directory.CreateDirectory(Path.Combine(SavePaths.ModDirectory, name));
+				if (!Directory.Exists(Path.Combine(SavePaths.ModDirectory, name)))
+					throw new Exception("Failed to create new mod");
+				Directory.CreateDirectory(Path.Combine(SavePaths.ModDirectory, name, "source"));
+				if (!Directory.Exists(Path.Combine(SavePaths.ModDirectory, name)))
+					throw new Exception("Failed to create new mod");
 			}
 		}
 
@@ -622,7 +698,8 @@ namespace DLS.Graphics
 			DeleteConfirmation,
 			NamePopup_RenameProject,
 			NamePopup_DuplicateProject,
-			NamePopup_NewProject
+			NamePopup_NewProject,
+			NamePopup_NewMod
 		}
 	}
 }

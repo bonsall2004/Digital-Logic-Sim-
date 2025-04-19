@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DLS.Description;
+using Game.ModLoader;
+using Game.ModLoader.Types;
+using UnityEngine;
 
 namespace DLS.Game
 {
@@ -24,6 +27,13 @@ namespace DLS.Game
 
 				AddChipToLibrary(chip, hidden);
 				builtinChipNames.Add(chip.Name);
+			}
+			
+			ModLoader.CreateModdedChipDescriptions();
+			foreach (ModChip modChip in ModLoader.ModdedChips)
+			{
+				AddChipToLibrary(modChip.Chip);
+				builtinChipNames.Add(modChip.Chip.Name);
 			}
 
 			// Add custom chips to list of all chips
@@ -106,7 +116,7 @@ namespace DLS.Game
 
 			foreach (ChipDescription chip in allChips)
 			{
-				if (!IsBuiltinChip(chip.Name))
+				if (!IsBuiltinChip(chip.Name) && chip.ChipType != ChipType.Modded)
 				{
 					customChipNames.Add(chip.Name);
 				}
@@ -132,7 +142,7 @@ namespace DLS.Game
 			return parents.ToArray();
 		}
 
-		void AddChipToLibrary(ChipDescription description, bool hidden = false)
+		public void AddChipToLibrary(ChipDescription description, bool hidden = false)
 		{
 			if (hidden) hiddenChips.Add(description);
 			else allChips.Add(description);

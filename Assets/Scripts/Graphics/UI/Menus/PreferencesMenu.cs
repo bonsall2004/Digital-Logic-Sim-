@@ -51,6 +51,12 @@ namespace DLS.Graphics
 			"Paused"
 		};
 
+		static readonly string[] SimulationImplementationOptions =
+		{
+			"Original",
+			"Realistic"
+		};
+
 		static readonly Vector2 entrySize = new(menuWidth, DrawSettings.SelectorWheelHeight);
 		public static readonly Vector2 settingFieldSize = new(entrySize.x / 3, entrySize.y);
 
@@ -61,6 +67,7 @@ namespace DLS.Graphics
 		static readonly UIHandle ID_Snapping = new("PREFS_Snapping");
 		static readonly UIHandle ID_StraightWires = new("PREFS_StraightWires");
 		static readonly UIHandle ID_SimStatus = new("PREFS_SimStatus");
+		static readonly UIHandle ID_SimImpl = new("PREFS_SimImpl");
 		static readonly UIHandle ID_SimFrequencyField = new("PREFS_SimTickTarget");
 
 		static readonly string showGridLabel = "Show grid" + UI.CreateColouredText(" (ctrl+G)", new Color(1, 1, 1, 0.35f));
@@ -102,14 +109,15 @@ namespace DLS.Graphics
 				int straightWireMode = DrawNextWheel("Straight wires", StraightWireOptions, ID_StraightWires);
 
 				DrawHeader("SIMULATION:");
-				bool pauseSim = MenuHelper.LabeledOptionsWheel("Status", labelCol, labelPosCurr, entrySize, ID_SimStatus, SimulationStatusOptions, settingFieldSize.x, true) == 1;
-				AddSpacing();
+				bool pauseSim = DrawNextWheel("Status", SimulationStatusOptions, ID_SimStatus) == 1;
+				int simImpl = DrawNextWheel("Implementation", SimulationImplementationOptions, ID_SimImpl);
 				InputFieldState freqState = MenuHelper.LabeledInputField("Steps per second (target)", labelCol, labelPosCurr, entrySize, ID_SimFrequencyField, integerInputValidator, settingFieldSize.x, true);
 				AddSpacing();
 				// Draw current simulation speed
 				Vector2 tickLabelRight = MenuHelper.DrawLabelSectionOfLabelInputPair(labelPosCurr, entrySize, "Steps per second (current)", labelCol * 0.75f, true);
 				UI.DrawPanel(tickLabelRight, settingFieldSize, new Color(0.18f, 0.18f, 0.18f), Anchor.CentreRight);
 				UI.DrawText(currentSimSpeedString, theme.FontBold, theme.FontSizeRegular, tickLabelRight + new Vector2(inputTextPad - settingFieldSize.x, 0), Anchor.TextCentreLeft, currentSimSpeedStringColour);
+
 
 				// Draw cancel/confirm buttons
 				Vector2 buttonTopLeft = new(labelPosCurr.x, UI.PrevBounds.Bottom);
@@ -132,6 +140,7 @@ namespace DLS.Graphics
 				project.description.Prefs_StraightWires = straightWireMode;
 				project.description.Prefs_SimTargetStepsPerSecond = targetSimTicksPerSecond;
 				project.description.Prefs_SimPaused = pauseSim;
+				project.description.Prefs_SimImpl = simImpl;
 
 				// Cancel / Confirm
 				if (result == MenuHelper.CancelConfirmResult.Cancel)
@@ -188,6 +197,7 @@ namespace DLS.Graphics
 			UI.GetWheelSelectorState(ID_Snapping).index = projDesc.Prefs_Snapping;
 			UI.GetWheelSelectorState(ID_StraightWires).index = projDesc.Prefs_StraightWires;
 			UI.GetWheelSelectorState(ID_SimStatus).index = projDesc.Prefs_SimPaused ? 1 : 0;
+			UI.GetWheelSelectorState(ID_SimImpl).index = projDesc.Prefs_SimImpl;
 			// -- Input fields
 			UI.GetInputFieldState(ID_SimFrequencyField).SetText(projDesc.Prefs_SimTargetStepsPerSecond + "", false);
 

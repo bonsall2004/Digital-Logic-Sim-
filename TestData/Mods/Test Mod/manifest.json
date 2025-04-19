@@ -1,0 +1,8 @@
+{
+  "ModName": "Test Mod",
+  "Version": null,
+  "Author": "Bonsall2004",
+  "Description": " but from a manifest this time",
+  "Licence": "MIT",
+  "Enabled": true
+}

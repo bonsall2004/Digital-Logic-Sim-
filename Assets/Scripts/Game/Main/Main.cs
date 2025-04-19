@@ -12,6 +12,7 @@ namespace DLS.Game
 	public static class Main
 	{
 		public static readonly Version DLSVersion = new(2, 1, 2);
+		public static readonly Version ModVersion = new(0, 1, 0);
 		public static readonly Version DLSVersion_EarliestCompatible = new(2, 0, 0);
 		public static readonly string LastUpdatedString = "18 April 2025";
 		public static AppSettings ActiveAppSettings;
@@ -85,6 +86,7 @@ namespace DLS.Game
 				Prefs_StraightWires = 0,
 				Prefs_SimTargetStepsPerSecond = 1000,
 				Prefs_SimPaused = false,
+				Prefs_SimImpl = 0,
 				AllCustomChipNames = Array.Empty<string>(),
 				StarredList = BuiltinCollectionCreator.GetDefaultStarredList().ToList(),
 				ChipCollections = new List<ChipCollection>(BuiltinCollectionCreator.CreateDefaultChipCollections())

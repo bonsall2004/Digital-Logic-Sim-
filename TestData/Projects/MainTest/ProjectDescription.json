@@ -2,14 +2,15 @@
   "ProjectName": "MainTest",
   "DLSVersion_LastSaved": "2.1.2",
   "DLSVersion_EarliestCompatible": "2.0.0",
-  "CreationTime": "2025-03-14T18:23:30.404+01:00",
-  "LastSaveTime": "2025-04-19T05:31:49.986+02:00",
+  "CreationTime": "2025-03-14T17:23:30.404+00:00",
+  "LastSaveTime": "2025-04-19T09:35:20.262+01:00",
   "Prefs_MainPinNamesDisplayMode": 0,
   "Prefs_ChipPinNamesDisplayMode": 1,
   "Prefs_GridDisplayMode": 1,
   "Prefs_Snapping": 2,
   "Prefs_StraightWires": 0,
   "Prefs_SimPaused": false,
+  "Prefs_SimImpl": 0,
   "Prefs_SimTargetStepsPerSecond": 1000,
   "AllCustomChipNames":[
     "AND",
@@ -59,7 +60,9 @@
     "DECODER-2",
     "RAM-256×8 (async)",
     "RAM-sync",
-    "FA"
+    "FA",
+    "rawr",
+    "dsa"
   ],
   "StarredList":[
     {
@@ -80,6 +83,14 @@
     },
     {
       "Name":"FA",
+      "IsCollection":false
+    },
+    {
+      "Name":"rawr",
+      "IsCollection":false
+    },
+    {
+      "Name":"dsa",
       "IsCollection":false
     }
   ],
@@ -121,7 +132,7 @@
     },
     {
       "Chips":["WIP2","RAM-sync"],
-      "IsToggledOpen":false,
+      "IsToggledOpen":true,
       "Name":"TEST"
     },
     {
