@@ -6,11 +6,17 @@ using System.Reflection;
 using DLS.Description;
 using DLS.Description.Types;
 using DLS.SaveSystem;
+using DLS.Simulation;
 using Game.ModLoader.Types;
 using UnityEngine;
 
 namespace Game.ModLoader
 {
+  
+  public interface IChipSim
+  {
+    public void Simulate(SimChip chip);
+  }
   public class ModLoader
   {
     public static ModDescription[] activeModDescriptions;
@@ -29,6 +35,10 @@ namespace Game.ModLoader
       {
         foreach (var chip in mod.chips)
         {
+          if (chip == null) continue;
+          chip.SetDefaults();
+          chip.Chip.SubChips = Array.Empty<SubChipDescription>();
+          chip.Chip.Wires = Array.Empty<WireDescription>();
           chip.Chip.ChipType = ChipType.Modded;
           modChips.Add(chip);
         }
@@ -69,7 +79,7 @@ namespace Game.ModLoader
             if (typeof(Mod).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
             {
               Mod instance = (Mod)Activator.CreateInstance(type);
-              instance.OnLoad();     
+              instance.OnLoad();
               activeMods.Add(instance);
             }
           }

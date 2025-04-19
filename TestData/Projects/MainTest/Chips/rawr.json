@@ -1,0 +1,32 @@
+{
+  "Name": "rawr",
+  "NameLocation": 0,
+  "ChipType": 0,
+  "Size": {
+    "x": 0.725,
+    "y": 0.375
+  },
+  "Colour": {
+    "r": 0.201864108,
+    "g": 0.1920601,
+    "b": 0.0939505845,
+    "a": 1
+  },
+  "InputPins":[],
+  "OutputPins":[],
+  "SubChips":[
+    {
+      "Name":"SpecialModdedChip",
+      "ID":1045696159,
+      "Label":"",
+      "Position":{
+        "x":-1.615,
+        "y":-0.875
+      },
+      "OutputPinColourInfo":[{"PinColour":0,"PinID":0}],
+      "InternalData":null
+    }
+  ],
+  "Wires":[],
+  "Displays": null
+}

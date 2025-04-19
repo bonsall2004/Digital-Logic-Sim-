@@ -41,6 +41,7 @@ namespace DLS.SaveSystem
 
 		public static void SaveChip(ChipDescription chipDescription, string projectName)
 		{
+			if (chipDescription.ChipType == ChipType.Modded) return;
 			string serializedDescription = CreateSerializedChipDescription(chipDescription);
 			WriteToFile(serializedDescription, GetChipFilePath(chipDescription.Name, projectName));
 		}

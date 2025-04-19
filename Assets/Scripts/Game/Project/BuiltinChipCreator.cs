@@ -38,7 +38,7 @@ namespace DLS.Game
 				CreateTristateBuffer(),
 				CreateClock(),
 				// ---- Memory ----
-				dev_CreateRAM_8(),
+				// dev_CreateRAM_8(),
 				dev_CreateRAM_16(),
 				CreateROM_8(),
 				CreateROM_16(),

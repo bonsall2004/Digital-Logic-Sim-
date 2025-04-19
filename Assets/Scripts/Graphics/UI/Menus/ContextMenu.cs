@@ -15,6 +15,7 @@ namespace DLS.Graphics
 		const int pad = 10;
 		const string menuDividerString = "#--#";
 		static string interactionContextName;
+		static ChipType hoveredChipType;
 		static bool bottomBarItemIsCollection;
 		static Vector2 mouseOpenMenuPos;
 
@@ -29,7 +30,8 @@ namespace DLS.Graphics
 
 
 		static readonly MenuEntry deleteEntry = new(Format("DELETE"), Delete, CanDelete);
-		static readonly MenuEntry openChipEntry = new(Format("OPEN"), OpenChip, CanOpenChip);
+
+		private static readonly MenuEntry openChipEntry = new(Format("OPEN"), OpenChip, CanOpenChip);
 		static readonly MenuEntry labelChipEntry = new(Format("LABEL"), OpenChipLabelPopup, CanLabelChip);
 
 		static readonly MenuEntry[] entries_customSubchip =
@@ -159,6 +161,7 @@ namespace DLS.Graphics
 				if (openSubChipContextMenu || openDevPinContextMenu || openWireContextMenu || openSubchipOutputPinContextMenu)
 				{
 					interactionContextName = string.Empty;
+					hoveredChipType = ChipType.Modded;
 					interactionContext = hoverElement;
 					string headerName = string.Empty;
 
@@ -166,6 +169,7 @@ namespace DLS.Graphics
 					{
 						SubChipInstance subChip = (SubChipInstance)hoverElement;
 						interactionContextName = subChip.Description.Name;
+						hoveredChipType = subChip.ChipType;
 
 						if (subChip.ChipType == ChipType.Custom)
 						{
@@ -328,7 +332,7 @@ namespace DLS.Graphics
 			}
 		}
 
-		static bool IsCustomChip() => !Project.ActiveProject.chipLibrary.IsBuiltinChip(interactionContextName);
+		static bool IsCustomChip() => !Project.ActiveProject.chipLibrary.IsBuiltinChip(interactionContextName); 
 		static bool CanEnterViewMode() => IsCustomChip();
 		static bool CanLabelChip() => Project.ActiveProject.CanEditViewedChip;
 		static void EnterViewMode() => Project.ActiveProject.EnterViewMode(interactionContext as SubChipInstance);
@@ -420,7 +424,7 @@ namespace DLS.Graphics
 			}
 		}
 
-		static bool CanOpenChip() => IsCustomChip() && CanEditCurrentChip();
+		static bool CanOpenChip() => IsCustomChip() && CanEditCurrentChip() && hoveredChipType != ChipType.Modded;
 
 		public static void Reset()
 		{

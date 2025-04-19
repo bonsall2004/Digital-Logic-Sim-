@@ -1,12 +1,14 @@
 using System;
 using System.Linq;
 using DLS.Description;
+using Game.ModLoader;
 
 namespace DLS.Simulation
 {
 	public class SimChip
 	{
 		public readonly ChipType ChipType;
+		public readonly ISimChip Callback;
 		public readonly int ID;
 
 		// Some builtin chips, such as RAM, require an internal state for memory
@@ -25,14 +27,20 @@ namespace DLS.Simulation
 		{
 			ID = -1;
 		}
-
+		
 		public SimChip(ChipDescription desc, SubChipDescription subChipDescription, SimChip[] subChips)
 		{
 			SubChips = subChips;
 			ID = subChipDescription.ID;
 			ChipType = desc.ChipType;
 			IsBuiltin = ChipType != ChipType.Custom;
-
+			if (ChipType == ChipType.Modded)
+			{
+				var modChip = ModLoader.ModdedChips.Where(m => m.Chip == desc); 
+				if(modChip.First() != null)
+					Callback = modChip.First();
+			}
+			
 			// ---- Create pins (don't allocate unnecessarily as very many sim chips maybe created!) ----
 			if (desc.InputPins.Length > 0)
 			{
