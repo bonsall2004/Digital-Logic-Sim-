@@ -90,7 +90,7 @@ namespace DLS.Graphics
 		static int selectedModIndex = -1;
 
 		static readonly string authorString = "Created by: Sebastian Lague | Modified By: bonsall2004 & MarcasRealAccount";
-		static readonly string versionString = $"Version: {Main.DLSVersion} ({Main.LastUpdatedString})";
+		static readonly string versionString = $"DLS: {Main.DLSVersion} | ML: {Main.ModVersion}";
 		static string SelectedProjectName => allProjectDescriptions[selectedProjectIndex].ProjectName;
 
 		static string FormatButtonString(string s) => capitalize ? s.ToUpper() : s;
