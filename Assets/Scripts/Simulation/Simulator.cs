@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading.Tasks;
 using DLS.Description;
 using DLS.Game;
@@ -198,52 +199,18 @@ namespace DLS.Simulation
       return result < uint.MaxValue / 2;
     }
 
-    private static async Task ProcessModdedChip(SimChip chip)
+    private static void ProcessModdedChip(SimChip chip)
     {
-      var inputs = new Pin[chip.InputPins.Length];
-      var outputs = new Pin[chip.OutputPins.Length];
-
-      await Task.Run(() =>
+      Pin[] outputs = new Pin[chip.OutputPins.Length];
+      chip.Callback.Simulate(
+        chip.InternalState,
+        chip.InputPins.Select(pin => new Pin { data = pin.State.GetRawBits(), tristateFlags = pin.State.GetTristateFlags() }).ToArray(),
+        ref outputs);
+      for (int j = 0; j < chip.OutputPins.Length; ++j)
       {
-        if (chip.InputPins.Length > 8)
-          Parallel.For(0, chip.InputPins.Length, i =>
-          {
-            inputs[i] = new Pin
-            {
-              data = chip.InputPins[i].State.GetRawBits(),
-              tristateFlags = chip.InputPins[i].State.GetTristateFlags()
-            };
-          });
-        else
-          for (var i = 0; i < chip.InputPins.Length; i++)
-            inputs[i] = new Pin
-            {
-              data = chip.InputPins[i].State.GetRawBits(),
-              tristateFlags = chip.InputPins[i].State.GetTristateFlags()
-            };
-
-        for (var i = 0; i < chip.OutputPins.Length; i++)
-          outputs[i] = new Pin
-          {
-            data = chip.OutputPins[i].State.GetRawBits(),
-            tristateFlags = chip.OutputPins[i].State.GetTristateFlags()
-          };
-      });
-
-      chip.Callback.Simulate(chip.InternalState, inputs, ref outputs);
-
-      if (chip.OutputPins.Length > 8)
-        Parallel.For(0, chip.OutputPins.Length, i =>
-        {
-          chip.OutputPins[i].State.SetAllBits(outputs[i].data);
-          chip.OutputPins[i].State.SetAllTristateFlags(outputs[i].tristateFlags);
-        });
-      else
-        for (var i = 0; i < chip.OutputPins.Length; i++)
-        {
-          chip.OutputPins[i].State.SetAllBits(outputs[i].data);
-          chip.OutputPins[i].State.SetAllTristateFlags(outputs[i].tristateFlags);
-        }
+        chip.OutputPins[j].State.SetAllBits(outputs[j].data);
+        chip.OutputPins[j].State.SetAllTristateFlags(outputs[j].tristateFlags);
+      }
     }
 
     private static void ProcessBuiltinChip(SimChip chip)
@@ -646,11 +613,11 @@ namespace DLS.Simulation
         }
         case ChipType.Rom_256x16:
         {
-          const int ByteMask = 0b11111111;
+          const int byteMask = 0b11111111;
           var address = chip.InputPins[0].State.GetRawBits();
           var data = chip.InternalState[address];
-          chip.OutputPins[0].State.SetAllBits_NoneDisconnected((data >> 8) & ByteMask);
-          chip.OutputPins[1].State.SetAllBits_NoneDisconnected(data & ByteMask);
+          chip.OutputPins[0].State.SetAllBits_NoneDisconnected((data >> 8) & byteMask);
+          chip.OutputPins[1].State.SetAllBits_NoneDisconnected(data & byteMask);
           break;
         }
         case ChipType.Rom_16Bit_24:
@@ -678,7 +645,7 @@ namespace DLS.Simulation
     }
 
 
-    public static void MergeXBitToYSource(SimChip chip, int inputBits, int outputBits)
+    private static void MergeXBitToYSource(SimChip chip, int inputBits, int outputBits)
     {
       ulong output = 0;
       ulong tristate = 0;
@@ -693,7 +660,7 @@ namespace DLS.Simulation
       chip.OutputPins[0].State.SetAllTristateFlags(tristate);
     }
 
-    public static void SplitXBitToYSource(SimChip chip, int inputBits, int outputBits)
+    private static void SplitXBitToYSource(SimChip chip, int inputBits, int outputBits)
     {
       var input = chip.InputPins[0].State.GetRawBits();
       var tristate = chip.InputPins[0].State.GetTristateFlags();
@@ -718,7 +685,7 @@ namespace DLS.Simulation
       return BuildSimChip(chipDesc, library, subChipDescription);
     }
 
-    public static SimChip BuildSimChip(ChipDescription chipDesc, ChipLibrary library, SubChipDescription selfSubChip)
+    private static SimChip BuildSimChip(ChipDescription chipDesc, ChipLibrary library, SubChipDescription selfSubChip)
     {
       var simChip = BuildSimChipRecursive(chipDesc, library, selfSubChip);
       return simChip;

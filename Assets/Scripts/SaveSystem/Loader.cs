@@ -5,7 +5,7 @@ using System.Linq;
 using DLS.Description;
 using DLS.Description.Types;
 using DLS.Game;
-using UnityEngine.WSA;
+using Game.ModLoader.Types;
 
 namespace DLS.SaveSystem
 {

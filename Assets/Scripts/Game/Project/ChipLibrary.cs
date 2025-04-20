@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DLS.Description;
-using Game.ModLoader;
 using Game.ModLoader.Types;
+using Game.ModLoader;
+
 using UnityEngine;
 
 namespace DLS.Game

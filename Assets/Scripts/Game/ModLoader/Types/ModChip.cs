@@ -5,13 +5,18 @@ using DLS.Description;
 using DLS.Description.Types;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 namespace Game.ModLoader.Types
 {
+  [Preserve]
   public class ModChip : ISimChip
   {
+    [Preserve]
     public string ChipName => GetType().Name;
+    [Preserve]
     [CanBeNull] private ChipDescription _chip;
+    [Preserve]
     public ChipDescription Chip
     {
       get
@@ -35,26 +40,31 @@ namespace Game.ModLoader.Types
       protected set => _chip = value;
     }
 
+    [Preserve]
     public virtual void SetDefaults()
     {
       
     }
 
-    protected PinDescription CreatePinDescription(string name, int pinId, PinBitCount bitCount, PinColour colour = PinColour.Red, PinValueDisplayMode visibility = PinValueDisplayMode.Off)
+    [Preserve]
+    protected PinDescription CreatePinDescription(string name, int pinId, PinBitCount bitCount = PinBitCount.Bit1, PinColour colour = PinColour.Red, PinValueDisplayMode visibility = PinValueDisplayMode.Off)
     {
       return new PinDescription(name, pinId, Vector2.zero, bitCount, colour, visibility);
     }
 
+    [Preserve]
     protected void SetNameLocation(NameDisplayLocation location)
     {
       _chip.NameLocation = location;
     }
 
+    [Preserve]
     protected void SetColor(Color colour)
     {
       _chip.Colour = colour;
     }
 
+    [Preserve]
     public virtual void Simulate(UInt64[] InternalData, in Pin[] Input, ref Pin[] Output)
     {
       
