@@ -1,6 +1,7 @@
 {
   "Name": "WIP2",
   "NameLocation": 0,
+  "ChipType": 0,
   "Size": {
     "x": 0.99,
     "y": 5.29
@@ -68,6 +69,7 @@
         "x":-4.22323,
         "y":6.48452
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":1994428648}],
       "InternalData":null
     },
@@ -79,6 +81,7 @@
         "x":-10.30913,
         "y":1.30694
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":0}],
       "InternalData":[75]
     },
@@ -90,6 +93,7 @@
         "x":-0.54797,
         "y":1.82081
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":128796038},{"PinColour":0,"PinID":632432616}],
       "InternalData":null
     },
@@ -101,18 +105,8 @@
         "x":-0.52274,
         "y":0.06068
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":128796038},{"PinColour":0,"PinID":632432616}],
-      "InternalData":null
-    },
-    {
-      "Name":"dev.RAM-8",
-      "ID":247733947,
-      "Label":null,
-      "Position":{
-        "x":7.47288,
-        "y":5.30698
-      },
-      "OutputPinColourInfo":[{"PinColour":0,"PinID":5}],
       "InternalData":null
     },
     {
@@ -123,6 +117,7 @@
         "x":4.04441,
         "y":1.33358
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":1627170817},{"PinColour":0,"PinID":333324187}],
       "InternalData":null
     },
@@ -134,6 +129,7 @@
         "x":2.43397,
         "y":4.82993
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":158720235}],
       "InternalData":null
     },
@@ -145,17 +141,19 @@
         "x":9.29044,
         "y":5.14383
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":158720235}],
       "InternalData":null
     },
     {
-      "Name":"ROM 256\u00d716",
+      "Name":"ROM 256×16",
       "ID":917070333,
       "Label":null,
       "Position":{
         "x":0.10546,
         "y":6.17454
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":1},{"PinColour":0,"PinID":2}],
       "InternalData":[5376,5633,5377,5633,5378,5633,5379,5632,5380,5632,5381,5633,5382,5633,5383,5632,5384,5632,5385,5632,5386,5633,5387,5633,5388,5633,5389,5633,5390,5633,5391,5632,5408,5632,5409,5632,5410,5632,5411,5633,5412,5633,5413,5633,5414,5633,5415,5632,5416,5632,5417,5632,5416,3840,5120,4608,769,2063,5120,3840,1536,2304,1536,4864,5416,3840,257,2063,5120,3840,2304,288,5120,4608,5416,3840,272,5120,6144,6656,5417,4608,5416,3840,6912,257,2063,5888,3487,4096,257,5417,5888,1296,3232,5392,3840,5376,5888,5393,3840,5377,5888,5394,3840,5378,5888,5395,3840,5379,5888,5396,3840,5380,5888,5397,3840,5381,5888,5398,3840,5382,5888,5399,3840,5383,5888,5400,3840,5384,5888,5401,3840,5385,5888,5402,3840,5386,5888,5403,3840,5387,5888,5404,3840,5388,5888,5405,3840,5389,5888,5406,3840,5390,5888,5407,3840,5391,5888,2868,7168,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     },
@@ -167,6 +165,7 @@
         "x":-10.35449,
         "y":1.88111
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":0}],
       "InternalData":[82]
     },
@@ -178,6 +177,7 @@
         "x":-6.29996,
         "y":-0.34476
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":2001814538}],
       "InternalData":null
     },
@@ -189,6 +189,7 @@
         "x":-9.20893,
         "y":5.13451
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":2,"PinID":1151713402},{"PinColour":2,"PinID":349361804},{"PinColour":2,"PinID":883528113},{"PinColour":2,"PinID":1590314579},{"PinColour":2,"PinID":1175090400},{"PinColour":2,"PinID":805153383},{"PinColour":2,"PinID":1401872117},{"PinColour":2,"PinID":1118858130},{"PinColour":2,"PinID":742048505},{"PinColour":2,"PinID":1476868706},{"PinColour":2,"PinID":87848670},{"PinColour":0,"PinID":288562873},{"PinColour":0,"PinID":1148046748},{"PinColour":0,"PinID":1249996143},{"PinColour":0,"PinID":1157119205},{"PinColour":0,"PinID":845055315},{"PinColour":0,"PinID":895153575}],
       "InternalData":null
     },
@@ -200,6 +201,7 @@
         "x":-2.20417,
         "y":5.98531
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":128796038},{"PinColour":0,"PinID":632432616}],
       "InternalData":null
     },
@@ -211,6 +213,7 @@
         "x":-8.16773,
         "y":-0.35528
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":1580367471}],
       "InternalData":null
     },
@@ -222,6 +225,7 @@
         "x":-11.46016,
         "y":-0.06158
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":2001814538}],
       "InternalData":null
     },
@@ -233,6 +237,7 @@
         "x":-4.96168,
         "y":0.70267
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":1782291836}],
       "InternalData":null
     },
@@ -244,6 +249,7 @@
         "x":7.04437,
         "y":0.63864
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":605802866}],
       "InternalData":null
     },
@@ -255,6 +261,7 @@
         "x":-9.44244,
         "y":-0.2815
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":356855654}],
       "InternalData":null
     },
@@ -266,7 +273,8 @@
         "x":0.00754,
         "y":3.93489
       },
-      "OutputPinColourInfo":[{"PinColour":0,"PinID":1}],
+      "Rotation":0.0,
+      "OutputPinColourInfo":null,
       "InternalData":[1275120978]
     },
     {
@@ -277,7 +285,8 @@
         "x":-3.46073,
         "y":-2.69268
       },
-      "OutputPinColourInfo":[],
+      "Rotation":0.0,
+      "OutputPinColourInfo":null,
       "InternalData":[76195595]
     },
     {
@@ -288,6 +297,7 @@
         "x":-4.13737,
         "y":4.77385
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":2001814538}],
       "InternalData":null
     },
@@ -299,6 +309,7 @@
         "x":12.75586,
         "y":-1.4854
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":6}],
       "InternalData":null
     },
@@ -310,6 +321,7 @@
         "x":6.98436,
         "y":1.59642
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":1222614200}],
       "InternalData":null
     },
@@ -321,6 +333,7 @@
         "x":7.0552,
         "y":-0.62319
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":1},{"PinColour":0,"PinID":2}],
       "InternalData":null
     },
@@ -332,6 +345,7 @@
         "x":9.12522,
         "y":0.9806
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":1938418986}],
       "InternalData":null
     },
@@ -343,6 +357,7 @@
         "x":7.0925,
         "y":-1.44374
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":1},{"PinColour":0,"PinID":2}],
       "InternalData":null
     },
@@ -354,6 +369,7 @@
         "x":-12.81953,
         "y":-2.40551
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":0}],
       "InternalData":null
     },
@@ -365,6 +381,7 @@
         "x":-11.58111,
         "y":-1.49484
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":1580367471}],
       "InternalData":null
     },
@@ -376,6 +393,7 @@
         "x":-12.96951,
         "y":-1.24071
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":0}],
       "InternalData":[67]
     },
@@ -387,6 +405,7 @@
         "x":-9.17539,
         "y":0.53817
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":356855654}],
       "InternalData":null
     },
@@ -398,6 +417,7 @@
         "x":9.59097,
         "y":-4.01915
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":2001814538}],
       "InternalData":null
     },
@@ -409,6 +429,7 @@
         "x":5.56148,
         "y":6.51579
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":128796038},{"PinColour":0,"PinID":632432616}],
       "InternalData":null
     },
@@ -420,6 +441,7 @@
         "x":2.64782,
         "y":1.72201
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":1454394007}],
       "InternalData":null
     },
@@ -431,6 +453,7 @@
         "x":9.07547,
         "y":-0.88058
       },
+      "Rotation":0.0,
       "OutputPinColourInfo":[{"PinColour":0,"PinID":2}],
       "InternalData":null
     }
@@ -564,20 +587,6 @@
     },
     {
       "SourcePinAddress":{
-        "PinID":5,
-        "PinOwnerID":247733947
-      },
-      "TargetPinAddress":{
-        "PinID":581914641,
-        "PinOwnerID":153832190
-      },
-      "ConnectionType":0,
-      "ConnectedWireIndex":-1,
-      "ConnectedWireSegmentIndex":-1,
-      "Points":[{"x":0.0,"y":0.0},{"x":0.0,"y":0.0}]
-    },
-    {
-      "SourcePinAddress":{
         "PinID":158720235,
         "PinOwnerID":153832190
       },
@@ -656,23 +665,9 @@
         "PinOwnerID":1255067638
       },
       "ConnectionType":1,
-      "ConnectedWireIndex":12,
+      "ConnectedWireIndex":11,
       "ConnectedWireSegmentIndex":0,
       "Points":[{"x":-7.14197,"y":-0.34843},{"x":-7.32057,"y":2.72294},{"x":-5.72798,"y":2.72294},{"x":-5.72798,"y":6.37857},{"x":0.0,"y":0.0}]
-    },
-    {
-      "SourcePinAddress":{
-        "PinID":1580367471,
-        "PinOwnerID":2092373440
-      },
-      "TargetPinAddress":{
-        "PinID":4,
-        "PinOwnerID":247733947
-      },
-      "ConnectionType":1,
-      "ConnectedWireIndex":15,
-      "ConnectedWireSegmentIndex":2,
-      "Points":[{"x":-5.72798,"y":5.10441},{"x":-0.72235,"y":5.10441},{"x":-0.72235,"y":4.33081},{"x":5.52711,"y":4.33081},{"x":5.52711,"y":4.58868},{"x":0.0,"y":0.0}]
     },
     {
       "SourcePinAddress":{
@@ -683,10 +678,10 @@
         "PinID":1027672421,
         "PinOwnerID":609414526
       },
-      "ConnectionType":1,
-      "ConnectedWireIndex":16,
-      "ConnectedWireSegmentIndex":0,
-      "Points":[{"x":-3.13415,"y":5.10441},{"x":-3.13415,"y":5.33194},{"x":0.0,"y":0.0}]
+      "ConnectionType":0,
+      "ConnectedWireIndex":-1,
+      "ConnectedWireSegmentIndex":-1,
+      "Points":[{"x":0.0,"y":0.0},{"x":-3.13415,"y":5.33194},{"x":0.0,"y":0.0}]
     },
     {
       "SourcePinAddress":{
@@ -701,20 +696,6 @@
       "ConnectedWireIndex":-1,
       "ConnectedWireSegmentIndex":-1,
       "Points":[{"x":0.0,"y":0.0},{"x":8.0906,"y":0.63864},{"x":8.0906,"y":-2.26752},{"x":-10.70327,"y":-2.26752},{"x":-10.70327,"y":4.54317},{"x":0.0,"y":0.0}]
-    },
-    {
-      "SourcePinAddress":{
-        "PinID":1,
-        "PinOwnerID":76195595
-      },
-      "TargetPinAddress":{
-        "PinID":1,
-        "PinOwnerID":247733947
-      },
-      "ConnectionType":1,
-      "ConnectedWireIndex":4,
-      "ConnectedWireSegmentIndex":0,
-      "Points":[{"x":5.05626,"y":3.98817},{"x":5.05627,"y":5.40778},{"x":0.0,"y":0.0}]
     },
     {
       "SourcePinAddress":{
@@ -754,7 +735,7 @@
         "PinOwnerID":1237918361
       },
       "ConnectionType":1,
-      "ConnectedWireIndex":21,
+      "ConnectedWireIndex":18,
       "ConnectedWireSegmentIndex":0,
       "Points":[{"x":-1.89033,"y":0.5235},{"x":0.0,"y":0.0}]
     },
@@ -810,7 +791,7 @@
         "PinOwnerID":1805959142
       },
       "ConnectionType":1,
-      "ConnectedWireIndex":25,
+      "ConnectedWireIndex":22,
       "ConnectedWireSegmentIndex":0,
       "Points":[{"x":-9.97518,"y":1.88111},{"x":-9.97518,"y":0.08361},{"x":0.0,"y":0.0}]
     },
@@ -838,7 +819,7 @@
         "PinOwnerID":1867709155
       },
       "ConnectionType":1,
-      "ConnectedWireIndex":27,
+      "ConnectedWireIndex":24,
       "ConnectedWireSegmentIndex":2,
       "Points":[{"x":-5.10695,"y":1.25578},{"x":-5.10695,"y":4.79626},{"x":0.0,"y":0.0}]
     },
@@ -852,7 +833,7 @@
         "PinOwnerID":687931053
       },
       "ConnectionType":1,
-      "ConnectedWireIndex":12,
+      "ConnectedWireIndex":11,
       "ConnectedWireSegmentIndex":0,
       "Points":[{"x":-7.44021,"y":-0.3515},{"x":-7.4402,"y":-1.17057},{"x":4.71352,"y":-1.17057},{"x":4.71352,"y":0.27946},{"x":0.0,"y":0.0}]
     },
@@ -866,7 +847,7 @@
         "PinOwnerID":2007842624
       },
       "ConnectionType":1,
-      "ConnectedWireIndex":29,
+      "ConnectedWireIndex":26,
       "ConnectedWireSegmentIndex":1,
       "Points":[{"x":-1.54796,"y":-1.17057},{"x":-1.54796,"y":1.16265},{"x":0.0,"y":0.0}]
     },
@@ -880,7 +861,7 @@
         "PinOwnerID":1237918361
       },
       "ConnectionType":1,
-      "ConnectedWireIndex":30,
+      "ConnectedWireIndex":27,
       "ConnectedWireSegmentIndex":0,
       "Points":[{"x":-1.54796,"y":-0.55101},{"x":0.0,"y":0.0}]
     },
@@ -894,7 +875,7 @@
         "PinOwnerID":1255067638
       },
       "ConnectionType":1,
-      "ConnectedWireIndex":25,
+      "ConnectedWireIndex":22,
       "ConnectedWireSegmentIndex":2,
       "Points":[{"x":-6.06223,"y":0.86},{"x":-6.00002,"y":2.45656},{"x":-5.28537,"y":2.45656},{"x":-5.28537,"y":5.55538},{"x":0.0,"y":0.0}]
     },
@@ -908,7 +889,7 @@
         "PinOwnerID":1255067638
       },
       "ConnectionType":1,
-      "ConnectedWireIndex":28,
+      "ConnectedWireIndex":25,
       "ConnectedWireSegmentIndex":1,
       "Points":[{"x":-4.93394,"y":4.78826},{"x":-4.93398,"y":5.94273},{"x":0.0,"y":0.0}]
     },
@@ -964,7 +945,7 @@
         "PinOwnerID":602363710
       },
       "ConnectionType":1,
-      "ConnectedWireIndex":29,
+      "ConnectedWireIndex":26,
       "ConnectedWireSegmentIndex":1,
       "Points":[{"x":-6.53977,"y":-1.17057},{"x":-6.53977,"y":-3.23403},{"x":8.24873,"y":-3.23403},{"x":8.24873,"y":0.62628},{"x":0.0,"y":0.0}]
     },
@@ -992,7 +973,7 @@
         "PinOwnerID":1049240007
       },
       "ConnectionType":1,
-      "ConnectedWireIndex":34,
+      "ConnectedWireIndex":31,
       "ConnectedWireSegmentIndex":2,
       "Points":[{"x":2.37536,"y":-0.44751},{"x":2.37532,"y":-1.42509},{"x":0.0,"y":0.0}]
     },
@@ -1082,20 +1063,6 @@
     },
     {
       "SourcePinAddress":{
-        "PinID":128796038,
-        "PinOwnerID":1137372670
-      },
-      "TargetPinAddress":{
-        "PinID":0,
-        "PinOwnerID":247733947
-      },
-      "ConnectionType":0,
-      "ConnectedWireIndex":-1,
-      "ConnectedWireSegmentIndex":-1,
-      "Points":[{"x":0.0,"y":0.0},{"x":6.51219,"y":6.99579},{"x":6.51219,"y":5.85893},{"x":0.0,"y":0.0}]
-    },
-    {
-      "SourcePinAddress":{
         "PinID":1580367471,
         "PinOwnerID":2092373440
       },
@@ -1103,10 +1070,10 @@
         "PinID":1027672421,
         "PinOwnerID":1137372670
       },
-      "ConnectionType":1,
-      "ConnectedWireIndex":16,
-      "ConnectedWireSegmentIndex":2,
-      "Points":[{"x":4.69719,"y":4.33081},{"x":4.69719,"y":5.91079},{"x":0.0,"y":0.0}]
+      "ConnectionType":0,
+      "ConnectedWireIndex":-1,
+      "ConnectedWireSegmentIndex":-1,
+      "Points":[{"x":0.0,"y":0.0},{"x":4.69719,"y":5.91079},{"x":0.0,"y":0.0}]
     },
     {
       "SourcePinAddress":{
@@ -1163,20 +1130,6 @@
       "ConnectedWireIndex":-1,
       "ConnectedWireSegmentIndex":-1,
       "Points":[{"x":0.0,"y":0.0},{"x":-6.88907,"y":6.57451},{"x":-6.88907,"y":8.98738},{"x":11.72848,"y":8.98738},{"x":11.72848,"y":1.91077},{"x":8.02446,"y":1.91077},{"x":8.02446,"y":0.93603},{"x":0.0,"y":0.0}]
-    },
-    {
-      "SourcePinAddress":{
-        "PinID":805153383,
-        "PinOwnerID":518660003
-      },
-      "TargetPinAddress":{
-        "PinID":2,
-        "PinOwnerID":247733947
-      },
-      "ConnectionType":0,
-      "ConnectedWireIndex":-1,
-      "ConnectedWireSegmentIndex":-1,
-      "Points":[{"x":0.0,"y":0.0},{"x":-6.08978,"y":6.25451},{"x":-6.08978,"y":3.45086},{"x":6.48437,"y":3.45086},{"x":6.48437,"y":5.04943},{"x":0.0,"y":0.0}]
     },
     {
       "SourcePinAddress":{
@@ -1356,7 +1309,7 @@
         "PinOwnerID":687931053
       },
       "ConnectionType":1,
-      "ConnectedWireIndex":60,
+      "ConnectedWireIndex":55,
       "ConnectedWireSegmentIndex":4,
       "Points":[{"x":3.21705,"y":0.11463},{"x":3.22904,"y":-0.08855},{"x":6.1216,"y":-0.06494},{"x":6.1098,"y":0.57261},{"x":0.0,"y":0.0}]
     },
@@ -1454,7 +1407,7 @@
         "PinOwnerID":2085911674
       },
       "ConnectionType":1,
-      "ConnectedWireIndex":25,
+      "ConnectedWireIndex":22,
       "ConnectedWireSegmentIndex":2,
       "Points":[{"x":-6.93894,"y":0.86458},{"x":-6.93908,"y":-3.70234},{"x":9.74005,"y":-3.60917},{"x":9.77077,"y":-2.85651},{"x":0.0,"y":0.0}]
     },
@@ -1510,7 +1463,7 @@
         "PinOwnerID":2085911674
       },
       "ConnectionType":1,
-      "ConnectedWireIndex":37,
+      "ConnectedWireIndex":34,
       "ConnectedWireSegmentIndex":1,
       "Points":[{"x":8.22771,"y":-3.23403},{"x":0.0,"y":0.0}]
     },
@@ -1543,6 +1496,5 @@
       "Points":[{"x":0.0,"y":0.0},{"x":0.0,"y":0.0}]
     }
   ],
-  "Displays": null,
-  "ChipType": 0
+  "Displays": null
 }

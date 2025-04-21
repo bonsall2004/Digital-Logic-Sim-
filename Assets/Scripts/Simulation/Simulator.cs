@@ -215,7 +215,6 @@ namespace DLS.Simulation
 
     private static void ProcessBuiltinChip(SimChip chip)
     {
-      Debug.Log(chip.ChipType);
       switch (chip.ChipType)
       {
         // ---- Process Built-in chips ----
