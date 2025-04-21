@@ -681,7 +681,7 @@ namespace DLS.Simulation
 
     public static SimChip BuildSimChip(ChipDescription chipDesc, ChipLibrary library)
     {
-      SubChipDescription subChipDescription = new(chipDesc.Name, -1, string.Empty, Vector2.zero, null);
+      SubChipDescription subChipDescription = new(chipDesc.Name, -1, string.Empty, Vector2.zero, 0, null);
       return BuildSimChip(chipDesc, library, subChipDescription);
     }
 

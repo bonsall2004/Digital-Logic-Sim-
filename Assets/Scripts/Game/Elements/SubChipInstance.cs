@@ -28,6 +28,8 @@ namespace DLS.Game
 		public readonly string MultiLineName;
 		public readonly PinInstance[] OutputPins;
 		public string Label;
+		
+		public float RotationAngle = 0;
 
 		public SubChipInstance(ChipDescription description, SubChipDescription subChipDesc)
 		{
@@ -40,7 +42,7 @@ namespace DLS.Game
 			IsBus = ChipTypeHelper.IsBusType(ChipType);
 			MultiLineName = CreateMultiLineName(description.Name);
 			MinSize = CalculateMinChipSize(description.InputPins, description.OutputPins, description.Name);
-
+			RotationAngle = subChipDesc.Rotation;
 			InputPins = CreatePinInstances(description.InputPins, true);
 			OutputPins = CreatePinInstances(description.OutputPins, false);
 			AllPins = InputPins.Concat(OutputPins).ToArray();

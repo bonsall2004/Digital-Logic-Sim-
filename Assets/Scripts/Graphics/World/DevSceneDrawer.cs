@@ -4,6 +4,7 @@ using DLS.Description;
 using DLS.Game;
 using DLS.Simulation;
 using JetBrains.Annotations;
+using NUnit.Framework.Internal;
 using Seb.Helpers;
 using Seb.Types;
 using Seb.Vis;
@@ -182,7 +183,17 @@ namespace DLS.Graphics
 							else boxCol = ActiveTheme.SelectionBoxMovingCol;
 						}
 
-						Draw.Quad(element.SelectionBoundingBox.Centre, element.SelectionBoundingBox.Size, boxCol);
+						if (element is SubChipInstance subChip)
+						{
+							Vector2 rotatedSize = Rotate(element.SelectionBoundingBox.Size, subChip.RotationAngle);
+							if(rotatedSize.x < 0.0f) rotatedSize.x *= -1;
+							if(rotatedSize.y < 0.0f) rotatedSize.y *= -1;
+							Draw.Quad(element.SelectionBoundingBox.Centre, rotatedSize, boxCol);
+						}
+						else
+						{
+							Draw.Quad(element.SelectionBoundingBox.Centre, element.SelectionBoundingBox.Size, boxCol);
+						}
 					}
 				}
 			}
@@ -197,7 +208,10 @@ namespace DLS.Graphics
 			FontType font = FontBold;
 
 			Vector2 size = Draw.CalculateTextBoundsSize(text, FontSizePinLabel, font) + LabelBackgroundPadding;
-			Vector2 centre = pin.GetWorldPos() + pin.ForwardDir * (size.x / 2 + offsetX);
+			
+			Vector2 rotatedOffset = Rotate(Vector2.left,  pin.GetRotation());
+			
+			Vector2 centre = pin.GetWorldPos() + rotatedOffset * (size.x / 2 + offsetX);
 
 			Draw.Quad(centre, size, ActiveTheme.PinLabelCol);
 			Draw.Text(font, text, FontSizePinLabel, centre, Anchor.TextFirstLineCentre, Color.white);
@@ -208,11 +222,14 @@ namespace DLS.Graphics
 			string text = chip.Label;
 			if (string.IsNullOrWhiteSpace(text)) return;
 
-			const float offsetY = 0.2f;
+			const float offsetY = 0.5f;
 			FontType font = FontBold;
 
 			Vector2 size = Draw.CalculateTextBoundsSize(text, FontSizePinLabel, font) + LabelBackgroundPadding;
-			Vector2 centre = chip.Position + Vector2.down * (chip.Size.y / 2 + offsetY);
+			Vector2 rotatedSize = Rotate(chip.Size, chip.RotationAngle);
+			if(rotatedSize.x < 0.0f) rotatedSize.x *= -1;
+			if(rotatedSize.y < 0.0f) rotatedSize.y *= -1;
+			Vector2 centre = chip.Position + Vector2.down * (rotatedSize.y / 2 + offsetY);
 
 			Draw.Quad(centre, size, ActiveTheme.PinLabelCol);
 			Draw.Text(font, text, FontSizePinLabel, centre, Anchor.TextFirstLineCentre, Color.white);
@@ -261,83 +278,104 @@ namespace DLS.Graphics
 			return useBlackText ? ColHelper.Darken(chipCol, a) : ColHelper.Brighten(chipCol, a);
 		}
 
-		public static void DrawSubChip(SubChipInstance subchip, SimChip sim = null)
+public static void DrawSubChip(SubChipInstance subchip, SimChip sim = null)
+{
+    ChipDescription desc = subchip.Description;
+
+    Vector2 rotatedSize = Rotate(desc.Size, subchip.RotationAngle);
+    if(rotatedSize.x < 0.0f) rotatedSize.x *= -1;
+    if(rotatedSize.y < 0.0f) rotatedSize.y *= -1;
+
+    Color chipCol = desc.Colour;
+    Vector2 pos = subchip.Position;
+    bool isButton = subchip.ChipType == ChipType.Key;
+
+    if (isButton)
+    {
+        if (subchip.OutputPins[0].State.GetBit(0) == PinState.LogicHigh)
+            chipCol = Color.white;
+    }
+
+    Color outlineCol = GetChipOutlineCol(chipCol);
+    bool useBlackText = ColHelper.ShouldUseBlackText(chipCol);
+
+    Color nameTextCol = useBlackText ? Color.black : Color.white;
+
+    float sat = ColHelper.Saturation(chipCol);
+    Color textColLowSat = useBlackText ? ColHelper.Darken(chipCol, 0.5f) : ColHelper.Brighten(chipCol, 0.25f);
+    nameTextCol = Color.Lerp(textColLowSat, nameTextCol, Mathf.InverseLerp(0, 0.1f, sat));
+
+    // Draw pins
+    for (int i = 0; i < subchip.AllPins.Length; i++)
+    {
+        if (i == 0 && ChipTypeHelper.IsBusOriginType(subchip.Description.ChipType)) continue;
+        DrawPin(subchip.AllPins[i], null, subchip);
+    }
+    
+    Vector2 outlineSize = rotatedSize + Vector2.one * ChipOutlineWidth * 2;
+    
+    // Draw outline and body
+    Draw.Quad(pos, outlineSize, outlineCol);
+    Draw.Quad(pos, rotatedSize, chipCol);
+    
+    Debug.Log($"Outline Size: {outlineSize}, Rotated Size: {rotatedSize}");
+    
+    if (InputHelper.MouseInsideBounds_World(pos, rotatedSize))
+    {
+        if (InteractionState.PinUnderMouse == null || InteractionState.PinUnderMouse.parent != subchip)
+        {
+            InteractionState.NotifyElementUnderMouse(subchip);
+        }
+    }
+
+    if (isButton || desc.NameLocation != NameDisplayLocation.Hidden)
+    {
+        string displayName = isButton ? RebindKeyChipMenu.KeyStrings[subchip.Key] : subchip.MultiLineName;
+        if (Draw.CalculateTextBoundsSize(subchip.Description.Name, FontSizeChipName, FontBold).x < rotatedSize.x - PinRadius * 2.5f)
+        {
+            displayName = subchip.Description.Name;
+        }
+
+        bool nameCentre = desc.NameLocation == NameDisplayLocation.Centre || isButton;
+        Anchor textAnchor = nameCentre ? Anchor.TextCentre : Anchor.CentreTop;
+        Vector2 rawTextPos = nameCentre ? pos : pos + Vector2.up * (rotatedSize.y / 2 - GridSize / 2);
+        Vector2 textPos = RotateAroundPoint(rawTextPos, subchip.Position, subchip.RotationAngle);
+
+        if (desc.NameLocation == NameDisplayLocation.Top)
+        {
+            Color bgBandCol = GetChipDisplayBorderCol(chipCol);
+            Vector2 topLeft = pos + new Vector2(-desc.Size.x / 2, desc.Size.y / 2);
+
+            var textBounds = Draw.CalculateTextBounds(displayName, FontBold, FontSizeChipName, textPos, textAnchor);
+            float h = (topLeft.y - textBounds.Centre.y) * 2;
+
+            Vector2 s = new(desc.Size.x, h);
+            Vector2 c = topLeft + new Vector2(s.x, -s.y) / 2;
+            Vector2 rotatedC = RotateAroundPoint(c, pos, subchip.RotationAngle);
+            Vector2 rotatedS = Rotate(s, subchip.RotationAngle);
+
+            Draw.Quad(rotatedC, rotatedS, bgBandCol);
+        }
+
+        Draw.Text(FontBold, displayName, FontSizeChipName, textPos, textAnchor, nameTextCol, ChipNameLineSpacing);
+    }
+}
+		
+		public static Vector2 Rotate(Vector2 v, float degrees)
 		{
-			ChipDescription desc = subchip.Description;
-			Color chipCol = desc.Colour;
-			Vector2 pos = subchip.Position;
-			bool isButton = subchip.ChipType == ChipType.Key;
+			float radians = degrees * Mathf.Deg2Rad;
+			float cos = Mathf.Cos(radians);
+			float sin = Mathf.Sin(radians);
 
-			if (isButton)
-			{
-				// Button changes colour when held down
-				if (subchip.OutputPins[0].State.GetBit(0) == PinState.LogicHigh) chipCol = Color.white;
-			}
+			return new Vector2(
+				v.x * cos - v.y * sin,
+				v.x * sin + v.y * cos
+			);
+		}
 
-			Color outlineCol = GetChipOutlineCol(chipCol);
-			bool useBlackText = ColHelper.ShouldUseBlackText(chipCol);
-
-			Color nameTextCol = useBlackText ? Color.black : Color.white;
-
-			// Use low grey text col for chips with close to zero saturation (I think it maybe looks better, but not quite sure...)
-			float sat = ColHelper.Saturation(chipCol);
-			Color textColLowSat = useBlackText ? ColHelper.Darken(chipCol, 0.5f) : ColHelper.Brighten(chipCol, 0.25f);
-			nameTextCol = Color.Lerp(textColLowSat, nameTextCol, Mathf.InverseLerp(0, 0.1f, sat));
-
-
-			// Draw pins
-			for (int i = 0; i < subchip.AllPins.Length; i++)
-			{
-				// Hide input pin on bus origin chips, since player connects to the bus wire instead (input pin is only used behind the scenes)
-				if (i == 0 && ChipTypeHelper.IsBusOriginType(subchip.Description.ChipType)) continue;
-
-				DrawPin(subchip.AllPins[i]);
-			}
-
-
-			// Draw outline and body
-			Draw.Quad(pos, desc.Size + Vector2.one * ChipOutlineWidth, outlineCol);
-			Draw.Quad(pos, desc.Size, chipCol);
-
-			// Mouse over detection
-			if (InputHelper.MouseInsideBounds_World(pos, desc.Size))
-			{
-				// If mouse is over one of this chip's pins, then prioritize keeping the pin highlighted (so interaction is not too fiddly)
-				if (InteractionState.PinUnderMouse == null || InteractionState.PinUnderMouse.parent != subchip)
-				{
-					InteractionState.NotifyElementUnderMouse(subchip);
-				}
-			}
-
-			// Draw name
-			if (isButton || desc.NameLocation != NameDisplayLocation.Hidden)
-			{
-				// Display on single line if name fits comfortably, otherwise use 'formatted' version (split across multiple lines)
-				string displayName = isButton ? RebindKeyChipMenu.KeyStrings[subchip.Key] : subchip.MultiLineName;
-				if (Draw.CalculateTextBoundsSize(subchip.Description.Name, FontSizeChipName, FontBold).x < subchip.Size.x - PinRadius * 2.5f)
-				{
-					displayName = subchip.Description.Name;
-				}
-
-				bool nameCentre = desc.NameLocation == NameDisplayLocation.Centre || isButton;
-				Anchor textAnchor = nameCentre ? Anchor.TextCentre : Anchor.CentreTop;
-				Vector2 textPos = nameCentre ? pos : pos + Vector2.up * (subchip.Size.y / 2 - GridSize / 2);
-
-				// Draw background band behind text if placed at top (so it doesn't look out of place..)
-				if (desc.NameLocation == NameDisplayLocation.Top)
-				{
-					Color bgBandCol = GetChipDisplayBorderCol(chipCol);
-					Vector2 topLeft = pos + new Vector2(-desc.Size.x / 2, desc.Size.y / 2);
-					TextRenderer.BoundingBox textBounds = Draw.CalculateTextBounds(displayName, FontBold, FontSizeChipName, textPos, textAnchor);
-					float h = (topLeft.y - textBounds.Centre.y) * 2;
-
-					Vector2 s = new(desc.Size.x, h);
-					Vector2 c = topLeft + new Vector2(s.x, -s.y) / 2;
-					Draw.Quad(c, s, bgBandCol);
-				}
-
-				Draw.Text(FontBold, displayName, FontSizeChipName, textPos, textAnchor, nameTextCol, ChipNameLineSpacing);
-			}
+		public static Vector2 RotateAroundPoint(Vector2 point, Vector2 pivot, float degrees)
+		{
+			return Rotate(point - pivot, degrees) + pivot;
 		}
 
 		public static void DrawSubchipDisplays(SubChipInstance subchip, SimChip sim = null, bool outOfBoundsDisplay = false)
@@ -610,7 +648,7 @@ namespace DLS.Graphics
 			return Bounds2D.CreateFromCentreAndSize(centre, boundsSize);
 		}
 
-		public static void DrawDevPin(DevPinInstance devPin)
+		public static void DrawDevPin(DevPinInstance devPin, SubChipInstance parent = null)
 		{
 			if (devPin.BitCount == PinBitCount.Bit1)
 			{
@@ -618,7 +656,7 @@ namespace DLS.Graphics
 			}
 			else
 			{
-				DrawMultiBitDevPin(devPin);
+				DrawMultiBitDevPin(devPin, parent);
 			}
 		}
 
@@ -651,7 +689,7 @@ namespace DLS.Graphics
 			DrawPinHandle(devPin, devPin.HandlePosition, devPin.GetHandleSize());
 		}
 
-		public static void DrawMultiBitDevPin(DevPinInstance devPin)
+		public static void DrawMultiBitDevPin(DevPinInstance devPin, SubChipInstance parent = null)
 		{
 			// Line between state display and pin
 			Draw.Line(devPin.StateDisplayPosition, devPin.PinPosition, 0.03f, Color.black);
@@ -697,7 +735,8 @@ namespace DLS.Graphics
 						}
 					}
 
-					Draw.Quad(pos, squareDisplaySize, stateCol);
+					Vector2 rotatedSize = parent == null ? squareDisplaySize : Rotate(squareDisplaySize, parent.RotationAngle);
+					Draw.Quad(pos, rotatedSize, stateCol);
 					currBitIndex--;
 				}
 			}
@@ -872,22 +911,22 @@ namespace DLS.Graphics
 			}
 		}
 
-		static void DrawPin(PinInstance pin, [CanBeNull] DevPinInstance devPin = null)
+		static void DrawPin(PinInstance pin, [CanBeNull] DevPinInstance devPin = null, SubChipInstance parent = null)
 		{
 			if (pin.bitCount == PinBitCount.Bit1)
 			{
-				DrawSingleBitPin(pin);
+				DrawSingleBitPin(pin, parent);
 			}
 			else
 			{
-				DrawMultiBitPin(pin);
+				DrawMultiBitPin(pin, parent);
 			}
 		}
 
-		static void DrawSingleBitPin(PinInstance pin)
+		static void DrawSingleBitPin(PinInstance pin, SubChipInstance parent)
 		{
 			Vector2 pinPos = pin.GetWorldPos();
-			Vector2 pinSelectionBoundsPos = pinPos + pin.ForwardDir * 0.02f;
+			Vector2 pinSelectionBoundsPos = pinPos + pin.RotationDir * 0.02f;
 			float pinSelectionBoundsRadius = PinRadius + 0.015f;
 
 			bool mouseOverPin = !InteractionState.MouseIsOverUI && InputHelper.MouseInsidePoint_World(pinSelectionBoundsPos, pinSelectionBoundsRadius);
@@ -905,29 +944,35 @@ namespace DLS.Graphics
 			Draw.Point(pinPos, PinRadius, pinCol);
 		}
 
-		static void DrawMultiBitPin(PinInstance pin)
+		static void DrawMultiBitPin(PinInstance pin, SubChipInstance parent = null)
 		{
-
 			const float pinWidth = PinRadius * 2 * 0.95f;
 			Vector2 pinPos = pin.GetWorldPos();
 			Vector2 pinSelectionBoundsPos = pinPos + Vector2.right * ((pin.IsSourcePin ? 1 : -1) * 0.02f);
 			float pinHeight = SubChipInstance.PinHeightFromBitCount(pin.bitCount);
 
 			Vector2 pinSize = new(pinWidth, pinHeight);
-
-			bool mouseOverPin = !InteractionState.MouseIsOverUI && InputHelper.MouseInsideBounds_World(pinSelectionBoundsPos, pinSize);
+			
+			Vector2 rotatedPinSize = Rotate(pinSize, pin.GetRotation());
+			if (rotatedPinSize.x < 0.0f) rotatedPinSize.x *= -1;
+			if (rotatedPinSize.y < 0.0f) rotatedPinSize.y *= -1;
+			
+			bool mouseOverPin = !InteractionState.MouseIsOverUI && InputHelper.MouseInsideBounds_World(pinSelectionBoundsPos, rotatedPinSize);
 
 			if (mouseOverPin) InteractionState.NotifyElementUnderMouse(pin);
 			bool canInteract = controller.CanInteractWithPin;
 
 			Color pinCol = mouseOverPin && canInteract ? ActiveTheme.PinHighlightCol : ActiveTheme.PinCol;
+			
 			// If hovering over pin while creating a wire, colour should indicate whether it is a valid connection
 			if (mouseOverPin && canInteract && controller.IsCreatingWire && !controller.CanCompleteWireConnection(pin))
 			{
 				pinCol = ActiveTheme.PinInvalidCol;
 			}
 
-			Draw.Quad(pinPos, pinSize, pinCol);
+
+
+			Draw.Quad(pinPos, rotatedPinSize, pinCol);
 		}
 
 		public static void DrawGrid(Color gridCol)

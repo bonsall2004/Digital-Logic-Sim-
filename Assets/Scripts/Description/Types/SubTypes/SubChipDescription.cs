@@ -9,6 +9,7 @@ namespace DLS.Description
 		public int ID; // Unique within parent chip. ID > 0
 		public string Label;
 		public Vector2 Position;
+		public float Rotation;
 		public OutputPinColourInfo[] OutputPinColourInfo;
 
 		// Arbitrary data for specific chip types:
@@ -18,7 +19,7 @@ namespace DLS.Description
 		// Otherwise is null
 		public UInt64[] InternalData;
 
-		public SubChipDescription(string name, int id, string label, Vector2 position, OutputPinColourInfo[] outputPinColInfo, UInt64[] internalData = null)
+		public SubChipDescription(string name, int id, string label, Vector2 position, float rotation, OutputPinColourInfo[] outputPinColInfo, UInt64[] internalData = null)
 		{
 			Name = name;
 			ID = id;
@@ -26,6 +27,7 @@ namespace DLS.Description
 			Position = position;
 			OutputPinColourInfo = outputPinColInfo;
 			InternalData = internalData;
+			Rotation = rotation;
 		}
 	}
 

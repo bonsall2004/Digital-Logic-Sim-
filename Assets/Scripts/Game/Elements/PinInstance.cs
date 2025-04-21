@@ -19,6 +19,7 @@ namespace DLS.Game
 		public readonly PinState State;
 		public PinColour Colour;
 		bool faceRight;
+		int rot;
 		public float LocalPosY;
 		public string Name;
 
@@ -35,9 +36,21 @@ namespace DLS.Game
 
 			IsBusPin = parent is SubChipInstance subchip && subchip.IsBus;
 			faceRight = isSourcePin;
+			rot = isSourcePin ? 1 : 0;
 		}
 
 		public Vector2 ForwardDir => faceRight ? Vector2.right : Vector2.left;
+		public Vector2 RotationDir => faceRight ? Vector2.right : Vector2.left;
+		
+		
+		// public Vector2 RotationDir => (rot % 4) switch
+		// {
+		// 	0 => Vector2.left,
+		// 	1 => Vector2.right,
+		// 	2 => Vector2.down,
+		// 	3 => Vector2.right,
+		// 	_ => Vector2.left
+		// };
 
 
 		public Vector2 GetWorldPos()
@@ -52,15 +65,29 @@ namespace DLS.Game
 					Vector2 chipPos = subchip.Position;
 
 					float xLocal = (chipSize.x / 2 + DrawSettings.ChipOutlineWidth / 2 - DrawSettings.SubChipPinInset) * (faceRight ? 1 : -1);
-					return chipPos + new Vector2(xLocal, LocalPosY);
+					return DevSceneDrawer.RotateAroundPoint(chipPos + new Vector2(xLocal, LocalPosY), chipPos, subchip.RotationAngle);
 				}
 				default:
 					throw new Exception("Parent type not supported");
 			}
 		}
 
+		public float GetRotation()
+		{
+			switch (parent)
+			{
+				case SubChipInstance chip:
+					return chip.RotationAngle;
+				default:
+					return 0;
+			}
+		}
+
 		public void SetBusFlip(bool flipped)
 		{
+			// rot++;
+			// rot %= 4;
+			// faceRight = IsSourcePin ^ flipped;
 			faceRight = IsSourcePin ^ flipped;
 		}
 

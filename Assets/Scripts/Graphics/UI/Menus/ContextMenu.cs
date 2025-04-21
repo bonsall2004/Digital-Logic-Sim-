@@ -33,25 +33,29 @@ namespace DLS.Graphics
 
 		private static readonly MenuEntry openChipEntry = new(Format("OPEN"), OpenChip, CanOpenChip);
 		static readonly MenuEntry labelChipEntry = new(Format("LABEL"), OpenChipLabelPopup, CanLabelChip);
+		static readonly MenuEntry rotateChipEntry = new(Format("ROTATE"), RotateChip, CanLabelChip);
 
 		static readonly MenuEntry[] entries_customSubchip =
 		{
 			new(Format("VIEW"), EnterViewMode, CanEnterViewMode),
 			openChipEntry,
 			labelChipEntry,
+			rotateChipEntry,
 			deleteEntry
 		};
 
 		static readonly MenuEntry[] entries_builtinSubchip =
 		{
 			labelChipEntry,
+			rotateChipEntry,
 			deleteEntry
 		};
 
 		static readonly MenuEntry[] entries_builtinBus =
 		{
-			new(Format("FLIP"), FlipBus, CanFlipBus),
+			// new(Format("FLIP"), FlipBus, CanFlipBus),
 			labelChipEntry,
+			rotateChipEntry,
 			deleteEntry
 		};
 
@@ -356,6 +360,17 @@ namespace DLS.Graphics
 		static void OpenChipLabelPopup()
 		{
 			UIDrawer.SetActiveMenu(UIDrawer.MenuType.ChipLabelPopup);
+		}
+
+		static void RotateChip()
+		{
+			((SubChipInstance)interactionContext).RotationAngle += 90;
+			((SubChipInstance)interactionContext).RotationAngle %= 360;
+		}
+
+		static bool CanRotateChip()
+		{
+			return true;
 		}
 
 		public static void EditWire()

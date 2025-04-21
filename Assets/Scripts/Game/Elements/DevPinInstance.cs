@@ -81,6 +81,7 @@ namespace DLS.Game
 
 
 		public Vector2 SnapPoint => Pin.GetWorldPos();
+		public float GetRotation() => Pin.GetRotation();
 
 		public bool ShouldBeIncludedInSelectionBox(Vector2 selectionCentre, Vector2 selectionSize)
 		{

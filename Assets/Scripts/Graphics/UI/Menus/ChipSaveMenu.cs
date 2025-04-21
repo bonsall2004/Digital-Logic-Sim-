@@ -136,7 +136,7 @@ namespace DLS.Graphics
 
 		static SubChipInstance CreatePreviewSubChipInstance(ChipDescription desc)
 		{
-			SubChipDescription subChipDesc = new(desc.Name, 0, string.Empty, Vector2.zero, Array.Empty<OutputPinColourInfo>());
+			SubChipDescription subChipDesc = new(desc.Name, 0, string.Empty, Vector2.zero, 0, Array.Empty<OutputPinColourInfo>());
 			return new SubChipInstance(desc, subChipDesc);
 		}
 

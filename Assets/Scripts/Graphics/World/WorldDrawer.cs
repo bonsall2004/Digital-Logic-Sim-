@@ -10,7 +10,6 @@ namespace DLS.Graphics
 		{
 			Draw.StartLayer(Vector2.zero, 1, false);
 
-
 			if (UIDrawer.ActiveMenu is UIDrawer.MenuType.ChipCustomization)
 			{
 				CustomizationSceneDrawer.DrawCustomizationScene();
